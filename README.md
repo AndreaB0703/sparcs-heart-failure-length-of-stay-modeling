@@ -4,7 +4,7 @@ This project analyzes **hospital length of stay (LOS) among patients hospitalize
 
 Heart failure hospitalizations are considered **Ambulatory Care Sensitive Conditions (ACSC)**, meaning that effective primary care and disease management may help prevent complications and reduce hospitalizations.
 
-The objective of this project is to illustrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, data structure, and empirical model diagnostics.
+The objective of this project is to illustrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, data structure, and empirical model diagnostics using R software. 
 
 ---
 
