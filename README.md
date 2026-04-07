@@ -38,7 +38,7 @@ scripts/01_data_cleaning.R
 
 # Research Question
 
-Which patient and hospital factors are associated with **hospital length of stay among patients hospitalized for heart failure**?
+What patient and hospital-level factors are associated with length of stay among patients hospitalized for heart failure?
 
 ---
 
