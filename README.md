@@ -58,7 +58,7 @@ The analysis followed four main steps.
 
 A **Directed Acyclic Graph (DAG)** was used to clarify relationships between patient characteristics, clinical severity, procedures, admission type, and hospital-level factors.
 
-The DAG guided variable selection and helped avoid inappropriate adjustment.
+The DAG guided variable selection and helped avoid inappropriate adjustment, and determine which variables should be adjusted for in the regression model.
 
 ![Directed Acyclic Graph](figure/dag_structure.png)
 
@@ -72,7 +72,11 @@ To account for this hierarchical structure, a **mixed-effects model with a rando
 
 ---
 
-# 3. Candidate Models
+# 3. Statistical Model
+
+LOS was modeled using a Gamma mixed-effects model with a log link and a random intercept for hospital.
+
+# 4. Candidate Models
 
 Length of stay is a variable that is:
 
@@ -95,7 +99,7 @@ Based on these diagnostics, two candidate models were evaluated:
 
 ---
 
-# 4. Model Comparison and Diagnostics
+# 5. Model Comparison and Diagnostics
 
 Candidate models were compared using:
 
