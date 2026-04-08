@@ -72,11 +72,7 @@ To account for this hierarchical structure, a **mixed-effects model with a rando
 
 ---
 
-# 3. Statistical Model
-
-LOS was modeled using a Gamma mixed-effects model with a log link and a random intercept for hospital.
-
-# 4. Candidate Models
+# 3. Candidate Models
 
 Length of stay is a variable that is:
 
