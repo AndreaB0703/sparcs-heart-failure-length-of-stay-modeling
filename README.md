@@ -1,44 +1,50 @@
-# Modeling Length of Stay Among Patients Hospitalized for Heart Failure Using SPARCS Data
+# Modeling Hospital Length of Stay Among Patients Hospitalized for Heart Failure Using SPARCS Data
 
-This project analyzes **hospital length of stay (LOS) among patients hospitalized for heart failure** using SPARCS data (~28,000 admissions across 178 hospitals).
+This repository presents an analysis of **hospital length of stay (LOS)** among patients hospitalized for **heart failure** using data from the New York State **SPARCS (Statewide Planning and Research Cooperative System)** database.
 
-Heart failure hospitalizations are considered **Ambulatory Care Sensitive Conditions (ACSC)**, meaning that effective primary care and disease management may help prevent complications and reduce hospitalizations.
+Heart failure hospitalizations are commonly considered **Ambulatory Care Sensitive Conditions (ACSC)**, meaning that effective primary care and disease management may help prevent complications and reduce hospitalizations.
 
-The objective of this project is to illustrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, data structure, and empirical model diagnostics using R software. 
+The goal of this project is to demonstrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, hierarchical data structure, and empirical model diagnostics using R.
 
 ---
 
 # Data Source
 
-Data come from the **SPARCS (Statewide Planning and Research Cooperative System)** database from New York State.
+Data come from the **New York State SPARCS inpatient database**.
 
-The original dataset contains **1,048,575 hospital admissions and 30 variables**.
+The original dataset contains:
+
+- **1,048,575 hospital admissions**
+- **30 variables**
+
+These data include information on patient demographics, diagnoses, procedures, payer type, admission characteristics, and hospital identifiers.
 
 ---
 
 # Data Preparation
 
-For this study, the dataset was restricted to **hospitalizations with a primary diagnosis of heart failure**, resulting in an analytical dataset with **27,925 observations across 178 hospitals**, while retaining the same 30 variables.
+For this study, the dataset was restricted to **hospitalizations with a primary diagnosis of heart failure**, resulting in an analytical dataset containing:
 
-Key data preparation steps included:
+- **27,925 hospitalizations**
+- **178 hospitals**
 
-* Identifying hospitalizations with **primary diagnosis of heart failure**
-* Creating categorical variables for **age group, payer type, and admission type**
-* Defining **procedure groups** based on clinical categories
-* Using **APR severity** as a measure of clinical severity
-* Preparing variables for mixed-effects modeling
+Several derived variables were created to facilitate the analysis.
 
-All data preparation steps are documented in the script:
+Key preparation steps included:
 
-```
-scripts/01_data_cleaning.R
-```
+- identifying hospitalizations with primary diagnosis of **heart failure**
+- creating categorical variables for **age group**, **payer type**, and **admission type**
+- defining **procedure groups** based on clinical procedure categories
+- using **APR severity of illness** as a measure of clinical severity
+- preparing variables for **mixed-effects modeling**
+
+All data preparation steps are documented in the script `scripts/01_data_cleaning.R`.
 
 ---
 
 # Research Question
 
-What patient and hospital-level factors are associated with length of stay among patients hospitalized for heart failure?
+**What patient and hospital-level factors are associated with length of stay among patients hospitalized for heart failure?**
 
 ---
 
@@ -46,15 +52,17 @@ What patient and hospital-level factors are associated with length of stay among
 
 The analysis followed four main steps.
 
+---
+
 ## 1. Causal Structure (DAG)
 
 A **Directed Acyclic Graph (DAG)** was used to clarify relationships between:
 
-* patient characteristics
-* clinical severity
-* procedures
-* admission type
-* hospital-level factors
+- patient characteristics  
+- clinical severity  
+- procedures  
+- admission type  
+- hospital-level factors  
 
 The DAG guided variable selection and helped avoid inappropriate adjustment.
 
@@ -62,7 +70,7 @@ The DAG guided variable selection and helped avoid inappropriate adjustment.
 
 ## 2. Data Structure
 
-Patients are **nested within hospitals**, meaning that observations are not independent.
+Patients are **nested within hospitals**, meaning observations are not statistically independent.
 
 To account for this hierarchical structure, a **mixed-effects model with a random intercept for hospital** was used.
 
@@ -70,55 +78,58 @@ To account for this hierarchical structure, a **mixed-effects model with a rando
 
 ## 3. Candidate Models
 
-Length of stay is:
+Length of stay is a variable that is:
 
-* continuous
-* strictly positive
-* strongly right-skewed
+- continuous  
+- strictly positive  
+- strongly right-skewed  
 
-Therefore, the following models were evaluated:
+Therefore, two candidate models were evaluated:
 
-* Gamma mixed model
-* Log-normal model
-
----
-
-# Distribution of Length of Stay
-
-The distribution of LOS shows strong right skewness.
-
-![LOS Distribution](figures/histogram_los.png)
+- **Gamma mixed-effects model**
+- **Log-normal mixed-effects model**
 
 ---
 
-# Candidate Distributions
+## Distribution of Length of Stay
 
-A Cullen–Frey plot was used to explore plausible distributions for LOS.
+Exploratory analysis showed that LOS has a strongly right-skewed distribution.
+
+![LOS Distribution](figures/los_distribution.png)
+
+---
+
+## Candidate Distributions
+
+A **Cullen–Frey plot** was used to explore plausible probability distributions for LOS.
 
 ![Cullen-Frey Plot](figures/Cullen_Frey_los.png)
 
 ---
 
-# Model Comparison and Diagnostics
+## Model Comparison and Diagnostics
 
 Candidate models were compared using:
 
-* **Akaike Information Criterion (AIC)**
-* **Residual diagnostics**
+- **Akaike Information Criterion (AIC)**
+- **residual diagnostics**
 
-The **Gamma mixed-effects model with a log link** provided the best fit for the LOS distribution.
+The **Gamma mixed-effects model with a log link** provided the best fit to the LOS distribution.
 
 ---
 
 # Final Model
 
-The final specification was a **Gamma mixed-effects model with a log link**, including:
+The final specification was a **Gamma mixed-effects model with log link**, including:
 
-* patient characteristics
-* clinical severity (APR severity)
-* procedure type
-* admission type
-* random intercept for hospital
+- age group  
+- sex  
+- race  
+- payer type  
+- clinical severity (APR severity)  
+- procedure type  
+- admission type  
+- random intercept for hospital  
 
 An **interaction between clinical severity and procedure type** was included in the final model.
 
@@ -126,77 +137,63 @@ An **interaction between clinical severity and procedure type** was included in 
 
 # Key Findings
 
-### Clinical Severity
+## Clinical Severity
 
-Clinical severity was the **strongest predictor of LOS**.
+Clinical severity was the **strongest predictor of length of stay**.
 
-Mean LOS by severity level:
+Model-adjusted mean LOS estimated using marginal means:
 
-| APR Severity | Mean LOS (days) |
-| ------------ | --------------- |
-| Minor        | 3.15            |
-| Moderate     | 4.31            |
-| Major        | 6.13            |
-| Extreme      | 10.32           |
+| APR Severity | Adjusted Mean LOS (days) |
+|--------------|--------------------------|
+| Minor        | 3.15 |
+| Moderate     | 4.31 |
+| Major        | 6.13 |
+| Extreme      | 10.32 |
 
----
-
-### Procedure Type
-
-Procedure type was also associated with LOS.
-
-| Procedure Type              | Mean LOS (days) |
-| --------------------------- | --------------- |
-| No procedure                | 4.50            |
-| Diagnostic procedures       | 6.38            |
-| Cardiac procedures          | 5.59            |
-| Respiratory / organ support | 5.33            |
+These results indicate a strong gradient in hospital stay with increasing severity of illness.
 
 ---
 
-# Interaction Between Severity and Procedures
+## Procedure Type
+
+Procedure type was also associated with length of stay.
+
+Adjusted mean LOS by procedure group:
+
+| Procedure Type | Adjusted Mean LOS (days) |
+|----------------|--------------------------|
+| No procedure | 4.50 |
+| Diagnostic procedures | 6.38 |
+| Cardiac procedures | 5.59 |
+| Respiratory / organ support | 5.33 |
+
+---
+
+## Interaction Between Severity and Procedures
 
 The final model revealed an **interaction between clinical severity and procedure type**.
 
-Among patients with **extreme clinical severity**, those undergoing diagnostic procedures stayed on average **5.79 additional days** in the hospital.
+Among patients with **extreme clinical severity**, those undergoing **diagnostic procedures** had an estimated **5.79 additional days of hospital stay** compared with patients without procedures.
 
 ![Interaction Plot](figures/interaction_procedure.png)
 
 ---
 
-# Hospital-Level Variation
+## Hospital-Level Variation
 
-Approximately **10% of the variation in LOS** was attributable to differences between hospitals.
+Approximately **10% of the variation in length of stay** was attributable to differences between hospitals, indicating meaningful hospital-level variation in LOS.
 
 ---
 
 # Reproducibility
 
-All analyses were conducted in **R** using the following packages:
+All analyses were conducted in **R**, using the following packages:
 
-* `lme4`
-* `emmeans`
-* `DHARMa`
-* `ggplot2`
+- `lme4`
+- `emmeans`
+- `DHARMa`
+- `ggplot2`
 
 ---
 
 # Repository Structure
-
-```
-data/
-scripts/
-figures/
-results/
-README.md
-```
-
----
-
-# Next Steps
-
-Future updates will include:
-
-* DAG visualization
-* detailed model diagnostics
-* a fully reproducible analysis pipeline
