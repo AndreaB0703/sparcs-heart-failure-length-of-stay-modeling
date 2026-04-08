@@ -58,9 +58,9 @@ The analysis followed four main steps.
 
 A **Directed Acyclic Graph (DAG)** was used to clarify relationships between patient characteristics, clinical severity, procedures, admission type, and hospital-level factors.
 
-The DAG guided variable selection and helped avoid inappropriate adjustment, and determine which variables should be adjusted for in the regression model.
+The DAG guided variable selection and helped avoid inappropriate statistical adjustment.
 
-![Directed Acyclic Graph](figure/dag_structure.png)
+![Causal DAG](figure/dag_structure.png)
 
 ---
 
@@ -84,9 +84,9 @@ Exploratory analysis confirmed the skewed distribution of LOS.
 
 ![Distribution of Length of Stay](figure/los_distribution.png)
 
-To identify plausible statistical distributions, a **Cullen–Frey plot** was used.
+To explore plausible statistical distributions, a **Cullen–Frey plot** was used.
 
-![Cullen-Frey Plot](output/Cullen_Frey_los.png)
+![Cullen-Frey Plot](figure/Cullen_Frey_los.png)
 
 Based on these diagnostics, two candidate models were evaluated:
 
@@ -95,7 +95,7 @@ Based on these diagnostics, two candidate models were evaluated:
 
 ---
 
-# 5. Model Comparison and Diagnostics
+# 4. Model Comparison and Diagnostics
 
 Candidate models were compared using:
 
@@ -125,51 +125,39 @@ An **interaction between clinical severity and procedure type** was included in 
 
 # Key Findings
 
-## Clinical Severity
+## Clinical Severity and Procedures
 
-Clinical severity was the **strongest predictor of length of stay**.
+Model-adjusted marginal means indicated that **length of stay increases with clinical severity**, and that this association **varies according to procedure type**.
 
-Model-adjusted mean LOS estimated using marginal means:
+For patients **without procedures**, the estimated LOS increased progressively with severity:
 
-| APR Severity | Adjusted Mean LOS (days) |
-| ------------ | ------------------------ |
-| Minor        | 3.15                     |
-| Moderate     | 4.31                     |
-| Major        | 6.13                     |
-| Extreme      | 10.32                    |
+| APR Severity | Estimated LOS (days) |
+| ------------ | -------------------- |
+| Minor        | 2.73                 |
+| Moderate     | 3.71                 |
+| Major        | 4.99                 |
+| Extreme      | 6.83                 |
 
-These results indicate a strong gradient in hospital stay with increasing severity of illness.
+However, when **diagnostic procedures** were performed, LOS increased substantially:
 
-![Length of Stay by Severity](figure/los_severity.png)
+| APR Severity | Estimated LOS with Diagnostic Procedures (days) |
+| ------------ | ----------------------------------------------- |
+| Minor        | 3.30                                            |
+| Moderate     | 4.80                                            |
+| Major        | 7.40                                            |
+| Extreme      | 12.62                                           |
 
----
+These results indicate that **procedure use amplifies the association between clinical severity and hospital length of stay**.
 
-## Procedure Type
+In particular, patients with **extreme severity undergoing diagnostic procedures** had an estimated LOS of **approximately 12.6 days**, compared with **6.8 days among patients with extreme severity who did not undergo procedures**.
 
-Procedure type was also associated with length of stay.
-
-| Procedure Type              | Adjusted Mean LOS (days) |
-| --------------------------- | ------------------------ |
-| No procedure                | 4.50                     |
-| Diagnostic procedures       | 6.38                     |
-| Cardiac procedures          | 5.59                     |
-| Respiratory / organ support | 5.33                     |
-
----
-
-## Interaction Between Severity and Procedures
-
-The final model revealed an **interaction between clinical severity and procedure type**.
-
-Among patients with **extreme clinical severity**, those undergoing **diagnostic procedures** had an estimated **5.79 additional days of hospital stay** compared with patients without procedures.
-
-![Interaction Between Severity and Procedures](output/interaction_procedure.png)
+![Interaction Between Severity and Procedures](figure/interaction_procedure.png)
 
 ---
 
 ## Hospital-Level Variation
 
-Approximately **10% of the variation in length of stay** was attributable to differences between hospitals.
+Approximately **10% of the variation in length of stay** was attributable to differences between hospitals, indicating meaningful hospital-level variation in LOS.
 
 ---
 
@@ -197,6 +185,6 @@ README.md
 # Author
 
 **Andrea B.**
-PhD in Epidemiology,
-Master of Public Health (MPH),
+PhD in Epidemiology
+Master of Public Health (MPH)
 Bachelor of Science in Nursing (BSN)
