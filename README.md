@@ -86,7 +86,7 @@ Exploratory analysis confirmed the skewed distribution of LOS.
 
 To explore plausible statistical distributions, a **Cullen–Frey plot** was used.
 
-![Cullen-Frey Plot](figure/Cullen_Frey_los.png)
+![Cullen-Frey Plot](output/Cullen_Frey_los.png)
 
 Based on these diagnostics, two candidate models were evaluated:
 
@@ -151,7 +151,7 @@ These results indicate that **procedure use amplifies the association between cl
 
 In particular, patients with **extreme severity undergoing diagnostic procedures** had an estimated LOS of **approximately 12.6 days**, compared with **6.8 days among patients with extreme severity who did not undergo procedures**.
 
-![Interaction Between Severity and Procedures](figure/interaction_procedure.png)
+![Interaction Between Severity and Procedures](output/interaction_procedure.png)
 
 ---
 
